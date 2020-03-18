@@ -8,7 +8,7 @@ services:
   api.backoffice:
     image: canals/php:latest
     environment:
-      - VHOST_HOSTNAME=docketu.iutnc.univ-lorraine.fr
+      - VHOST_HOSTNAME=api.backoffice.local
       - VHOST_DOCROOT=/var/www/public
     ports:
       - "19080:80"
@@ -25,7 +25,7 @@ services:
   api.mobile:
     image: canals/php:latest
     environment:
-      - VHOST_HOSTNAME=docketu.iutnc.univ-lorraine.fr
+      - VHOST_HOSTNAME=api.mobile.local
       - VHOST_DOCROOT=/var/www/public
     ports:
       - "19180:80"
@@ -42,7 +42,7 @@ services:
   api.player:
     image: canals/php:latest
     environment:
-      - VHOST_HOSTNAME=web.test.local
+      - VHOST_HOSTNAME=api.player.local
       - VHOST_DOCROOT=/var/www/public
     ports:
       - "19280:80"
