@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use gq\backoffice\Models\User;
+use Ramsey\Uuid\Uuid;
 
 class AccountController
 {
@@ -28,6 +29,7 @@ class AccountController
         }
         $body = $rq->getParsedBody();
         $user = new User();
+        $user->id=Uuid::uuid4();
         $user->name=filter_var($body['name'],FILTER_SANITIZE_STRING);
         $user->mail=filter_var($body['email'],FILTER_SANITIZE_EMAIL);
         $user->password=password_hash($body['password'],PASSWORD_DEFAULT);

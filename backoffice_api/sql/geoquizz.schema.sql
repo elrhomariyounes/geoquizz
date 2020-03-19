@@ -6,7 +6,7 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` varchar (128) NOT NULL,
   `name` varchar(128) NOT NULL,
   `mail` varchar(256) NOT NULL,
   `password` varchar(256) NOT NULL,
