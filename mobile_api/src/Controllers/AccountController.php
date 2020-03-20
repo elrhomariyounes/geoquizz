@@ -5,7 +5,7 @@ namespace gq\mobile\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use gq\mobile\Helpers\JWTCreator;
+use gq\mobile\Helpers\JWTHelper;
 use gq\mobile\Helpers\Response\ResponseWrapper;
 use gq\mobile\Models\Responses\ErrorResponse;
 use gq\mobile\Models\User;
@@ -34,7 +34,7 @@ class AccountController
                 return $rs;
             }
             $key = $this->_container->settings['key'];
-            $token = JWTCreator::createToken($key,$user->id);
+            $token = JWTHelper::createToken($key,$user->id);
             $rs=$rs->withStatus(200)->withHeader('Content-type', 'application/json');
             $rs->getBody()->write(json_encode(['token'=>$token]));
             return $rs;

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "962d79c53fee042cbd4b324470838462",
+    "content-hash": "d81056230835d0c6364a93bdda0e2eea",
     "packages": [
         {
             "name": "davidepastore/slim-validation",

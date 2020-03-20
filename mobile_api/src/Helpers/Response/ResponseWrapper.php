@@ -5,7 +5,7 @@ namespace gq\mobile\Helpers\Response;
 use gq\mobile\Models\Responses\ErrorResponse;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-
+use gq\mobile\Models\Responses\ResourceResponse;
 class ResponseWrapper
 {
     public static function errorResponse(ErrorResponse $errorModel, Response $rs){
@@ -14,13 +14,19 @@ class ResponseWrapper
         return $rs;
     }
 
-    //TODO : delete if there is no sign up in mobile app
-//    public static function createdResponse(ResourceResponse $model, Response $rs){
-//        $rs=$rs->withStatus($model->getStatus())
-//            ->withHeader('Content-type','application/json')
-//            ->withAddedHeader('Location',"/users/".$model->getResult()->id);
-//        $rs->getBody()->write(json_encode($model));
-//        return $rs;
-//    }
 
+    public static function createdResponse(ResourceResponse $model, Response $rs){
+        $modelName= strtolower((new \ReflectionClass($model->getResult()))->getShortName());
+        $rs=$rs->withStatus($model->getStatus())
+            ->withHeader('Content-type','application/json')
+            ->withAddedHeader('Location',"/".$modelName."s"."/".$model->getResult()->id);
+        $rs->getBody()->write(json_encode($model));
+        return $rs;
+    }
+
+    public static function collectionResponse(ResourceResponse $model, Response $rs){
+        $rs=$rs->withStatus($model->getStatus())->withHeader('Content-type','application/json');
+        $rs->getBody()->write(json_encode($model));
+        return $rs;
+    }
 }
