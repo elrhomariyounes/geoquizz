@@ -41,7 +41,7 @@ CREATE TABLE `photo` (
   `position` varchar(256) NOT NULL,
   `url` varchar (256) NOT NULL,
   `serie_id` int(11) DEFAULT NULL,
-  `game_id` int(11) DEFAULT NULL,
+  `game_id` varchar(128) DEFAULT NULL,
   `user_id` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

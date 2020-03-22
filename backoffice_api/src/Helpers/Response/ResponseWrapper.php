@@ -16,9 +16,16 @@ class ResponseWrapper
     }
 
     public static function createdResponse(ResourceResponse $model, Response $rs){
+        $modelName= strtolower((new \ReflectionClass($model->getResult()))->getShortName());
         $rs=$rs->withStatus($model->getStatus())
             ->withHeader('Content-type','application/json')
-            ->withAddedHeader('Location',"/users/".$model->getResult()->id);
+            ->withAddedHeader('Location',"/".$modelName."s"."/".$model->getResult()->id);
+        $rs->getBody()->write(json_encode($model));
+        return $rs;
+    }
+
+    public static function collectionResponse(ResourceResponse $model, Response $rs){
+        $rs=$rs->withStatus($model->getStatus())->withHeader('Content-type','application/json');
         $rs->getBody()->write(json_encode($model));
         return $rs;
     }

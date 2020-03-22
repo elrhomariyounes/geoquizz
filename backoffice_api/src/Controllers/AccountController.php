@@ -2,7 +2,7 @@
 
 
 namespace gq\backoffice\Controllers;
-use gq\backoffice\Helpers\JWTCreator;
+use gq\backoffice\Helpers\JWTHelper;
 use gq\backoffice\Helpers\Response\ResponseWrapper;
 use gq\backoffice\Models\Responses\ErrorResponse;
 use gq\backoffice\Models\Responses\ResourceResponse;
@@ -59,13 +59,19 @@ class AccountController
                 return $rs;
             }
             $key = $this->_container->settings['key'];
-            $token = JWTCreator::createToken($key,$user->id);
+            $token = JWTHelper::createToken($key,$user->id);
+            $responseObject = [
+                "token"=>$token,
+                "user"=>[
+                    "id"=>$user->id
+                ]
+            ];
             $rs=$rs->withStatus(200)->withHeader('Content-type', 'application/json');
-            $rs->getBody()->write(json_encode(['token'=>$token]));
+            $rs->getBody()->write(json_encode($responseObject));
             return $rs;
 
         }catch (ModelNotFoundException $ex){
-            $error = new ErrorResponse("error",500,$ex->getMessage());
+            $error = new ErrorResponse("error",404,"Bad credentials !!");
             $rs = ResponseWrapper::errorResponse($error,$rs);
             return $rs;
         }
