@@ -1,0 +1,33 @@
+<?php
+
+
+namespace gq\player\Helpers\Response;
+use gq\player\Models\Responses\ErrorResponse;
+use gq\player\Models\Responses\ResourceResponse;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+
+class ResponseWrapper
+{
+    public static function errorResponse(ErrorResponse $errorModel, Response $rs){
+        $rs=$rs->withStatus($errorModel->getStatus())->withHeader("Content-Type","application/json;charset=utf-8");
+        $rs->getBody()->write(json_encode($errorModel));
+        return $rs;
+    }
+
+    public static function createdResponse(ResourceResponse $model, Response $rs){
+        $modelName= strtolower((new \ReflectionClass($model->getResult()))->getShortName());
+        $rs=$rs->withStatus($model->getStatus())
+            ->withHeader('Content-type','application/json')
+            ->withAddedHeader('Location',"/".$modelName."s"."/".$model->getResult()->id);
+        $rs->getBody()->write(json_encode($model));
+        return $rs;
+    }
+
+    public static function collectionResponse(ResourceResponse $model, Response $rs){
+        $rs=$rs->withStatus($model->getStatus())->withHeader('Content-type','application/json');
+        $rs->getBody()->write(json_encode($model));
+        return $rs;
+    }
+
+}
