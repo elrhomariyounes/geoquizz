@@ -36,7 +36,13 @@ class AccountController
             $key = $this->_container->settings['key'];
             $token = JWTHelper::createToken($key,$user->id);
             $rs=$rs->withStatus(200)->withHeader('Content-type', 'application/json');
-            $rs->getBody()->write(json_encode(['token'=>$token]));
+            $responseObject = [
+              "token"=>$token,
+              "user"=>[
+                  "id"=>$user->id
+              ]
+            ];
+            $rs->getBody()->write(json_encode($responseObject));
             return $rs;
 
         }catch (\Exception $ex){
