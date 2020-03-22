@@ -2,6 +2,7 @@
 
 
 namespace gq\mobile\Controllers;
+use gq\mobile\Models\Difficulty;
 use gq\mobile\Models\Photo;
 use gq\mobile\Models\Serie;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -19,6 +20,11 @@ class SerieController
         $this->_container = $_container;
     }
 
+    public function GetDifficulties(Request $rq, Response $rs){
+        $difficulties = Difficulty::all();
+        return ResponseWrapper::collectionResponse(new ResourceResponse("collection",200,$difficulties),$rs);
+    }
+
     public function GetSeries(Request $rq, Response $rs){
         $series = Serie::all();
         return ResponseWrapper::collectionResponse(new ResourceResponse("collection",200,$series),$rs);
@@ -34,6 +40,7 @@ class SerieController
         $serie = new Serie();
         $serie->city=filter_var($body['city'],FILTER_SANITIZE_STRING);
         $serie->difficulty_id= filter_var($body['difficultyId'],FILTER_SANITIZE_NUMBER_INT);
+        //TODO : add maps_refs attribute
         try {
             $serie->saveOrFail();
             $rs = ResponseWrapper::createdResponse(new ResourceResponse("resource",201,$serie),$rs);

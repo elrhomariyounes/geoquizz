@@ -58,4 +58,9 @@ $app->post('/series[/]',function ($rq,$rs,$args) use ($container){
 $app->put('/photos/{id}[/]',function ($rq,$rs,$args) use ($container){
     return (new SerieController($container))->AssignSerieToPhoto($rq,$rs,$args);
 })->add(new TokenMiddleware($container));
+
+//Get Difficulties
+$app->get('/difficulties[/]',function ($rq,$rs) use ($container){
+    return (new SerieController($container))->GetDifficulties($rq,$rs);
+});
 $app->run();
