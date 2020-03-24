@@ -6,6 +6,7 @@ use gq\backoffice\Controllers\SerieController;
 use gq\backoffice\Helpers\DataBaseHelper;
 use gq\backoffice\Helpers\Validator\ValidatorHelper;
 use DavidePastore\Slim\Validation\Validation;
+use gq\backoffice\Middlewares\CorsMiddleware;
 use gq\backoffice\Middlewares\TokenMiddleware;
 require "../src/vendor/autoload.php";
 
@@ -25,7 +26,7 @@ DataBaseHelper::ConnectToDatabase($app->getContainer()->settings['dbConf']);
 $app->options('/{routes:.+}', function ($request, $response, $args) {
     return $response;
 });
-$app->add(new \gq\backoffice\Middlewares\CorsMiddleware($container));
+$app->add(new CorsMiddleware($container));
 
 
 // TODO : delete app health

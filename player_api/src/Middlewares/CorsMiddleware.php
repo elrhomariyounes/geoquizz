@@ -14,7 +14,6 @@ class CorsMiddleware extends AbstractMiddleware
         if(!$this->OriginIsSet($rq)){
             $error = new ErrorResponse("error",403,"No Origin Header !!");
             return ResponseWrapper::errorResponse($error,$rs);
-            return $rs;
         }
         $origin = $rq->getHeaderLine('Origin');
         $rq = $rq->withAttribute('origin',$origin);
