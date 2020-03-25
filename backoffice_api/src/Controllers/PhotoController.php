@@ -52,7 +52,7 @@ class PhotoController
         $photo = new Photo();
         $photo->description = filter_var($parsedBody['description'],FILTER_SANITIZE_STRING);
         $photo->url = filter_var($parsedBody['url'],FILTER_SANITIZE_STRING);
-        $photo->position = "[".$parsedBody['lng'].",".$parsedBody['lat']."]";
+        $photo->position = "[".$parsedBody['lat'].",".$parsedBody['lng']."]";
         $photo->serie_id = filter_var($parsedBody['serieId'],FILTER_SANITIZE_NUMBER_INT);
         $photo->user_id=filter_var($parsedBody['userId'],FILTER_SANITIZE_STRING);
         try {

@@ -28,7 +28,6 @@ $app->options('/{routes:.+}', function ($request, $response, $args) {
 });
 $app->add(new CorsMiddleware($container));
 
-
 // TODO : delete app health
 $app->get('/Hello[/]', function($rq,$rs,$args) use ($container){
     $rs=$rs->withStatus(200)
