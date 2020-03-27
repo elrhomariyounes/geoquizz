@@ -21,7 +21,7 @@ class SerieController
 
     public function GetSeriesWithRandomPhoto(Request $rq, Response $rs, $args){
         $responseObject = [];
-        $series = Serie::all();
+        $series = Serie::where('id','!=',0)->with('difficulty')->get();
         foreach ($series as $serie){
             $photoIds = Photo::where('serie_id','=',$serie->id)->pluck('id')->toArray();
             if($photoIds!=null){

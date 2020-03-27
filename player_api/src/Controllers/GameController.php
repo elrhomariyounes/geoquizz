@@ -77,10 +77,20 @@ class GameController
      *
      */
     public function GetGamePhotos(Request $rq, Response $rs, $args){
-        //TODO : Generate random photos if a serie contains more than number of photos in the game
         $game=Game::find($args['id']);
         $serie = Serie::find($game->serie_id);
-        $photos = Photo::where('serie_id','=',$serie->id)->exclude(['user_id'])->get();
+        //Get id all photo ids
+        $photoIds = Photo::where('serie_id','=',$serie->id)->pluck('id')->toArray();
+        //Pick random ids from the array of the ids
+        $randomIndexes = array_rand($photoIds,10);
+        //Random photo ids array
+        $randomPhotoIds=[];
+        //Loop into the random indexes to get the random ids
+        foreach ($randomIndexes as $index){
+            array_push($randomPhotoIds,$photoIds[$index]);
+        }
+        //Pass the random ids   to where
+        $photos = Photo::whereIn('id',$randomPhotoIds)->exclude(['user_id'])->get();
         if($game!=null){
             $game->state=2;
             $game->save();
@@ -110,11 +120,20 @@ class GameController
     public function GetSerieScores(Request $rq, Response $rs, $args){
         $games = Game::where('serie_id','=',$args['id'])->where('state','=',3)
                         ->orderBy('score','DESC')
-                        ->exclude(['id','token','created_at','updated_date','state','nb_photos','serie_id'])
+                        ->exclude(['id','token','created_at','updated_at','state','nb_photos','serie_id'])
                         ->get();
         if($games->isNotEmpty()){
             return ResponseWrapper::collectionResponse(new ResourceResponse("collection",200,$games),$rs);
         }
         return ResponseWrapper::errorResponse(new ErrorResponse("error",404,"No serie found with the id : ".$args['id']),$rs);
+    }
+
+    public function GetAllGamesScores(Request $rq, Response $rs, $args){
+        $games = Game::where('state','=',3)->with('serie')
+                        ->orderBy('score','DESC')
+                        ->take(10)
+                        ->exclude(['id','token','created_at','updated_at','state','nb_photos'])
+                        ->get();
+        return ResponseWrapper::collectionResponse(new ResourceResponse("collection",200,$games),$rs);
     }
 }
