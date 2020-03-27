@@ -40,7 +40,7 @@ class SerieController
         $serie = new Serie();
         $serie->city=filter_var($body['city'],FILTER_SANITIZE_STRING);
         $serie->difficulty_id= filter_var($body['difficultyId'],FILTER_SANITIZE_NUMBER_INT);
-        //TODO : add maps_refs attribute
+        $serie->map_refs=filter_var($body['map_refs'],FILTER_SANITIZE_STRING);
         try {
             $serie->saveOrFail();
             $rs = ResponseWrapper::createdResponse(new ResourceResponse("resource",201,$serie),$rs);
