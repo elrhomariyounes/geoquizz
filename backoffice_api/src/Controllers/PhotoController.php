@@ -18,6 +18,30 @@ class PhotoController
         $this->_container = $_container;
     }
 
+    /**
+     * @OA\Put(
+     *     path="/photos/{id_photo}",
+     *     tags={"photo"},
+     *     summary="Assign photo to a serie",
+     *     description="Affectation d'une photo prise de l'application mobile à une serie",
+     *     @OA\Parameter(
+     *          name="photoId",
+     *          in="path",
+     *          description="id de la photo",
+     *          required=true,
+     *          @OA\Schema(type="int")
+     *      ),
+     *     @OA\Response(
+     *         response="204",
+     *         description="La photo est affecté à la serie demandé"
+     *     ),
+     *     @OA\RequestBody(
+     *         description="",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/AssignPhotoToSerie")
+     *     )
+     * )
+     */
     public function AssignSerieToPhoto(Request $rq, Response $rs, $args){
         if(isset($args['id'])){
             $body = $rq->getParsedBody();
@@ -42,6 +66,24 @@ class PhotoController
         }
     }
 
+    /**
+     * @OA\Post(
+     *     path="/photos",
+     *     tags={"photo"},
+     *     summary="Add new Photo",
+     *     description="Ajout d'une nouvelle photo",
+     *     @OA\Response(
+     *         response="201",
+     *         description="Photo ajoutée",
+     *          @OA\JsonContent(ref="#/components/schemas/Photo")
+     *     ),
+     *     @OA\RequestBody(
+     *         description="",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/PhotoViewModel")
+     *     )
+     * )
+     */
     public function AddPhoto(Request $rq, Response $rs){
         if($rq->getAttribute('has_errors')){
             $error = new ErrorResponse("error",422,$rq->getAttribute('errors'));
@@ -66,6 +108,30 @@ class PhotoController
         }
     }
 
+
+    /**
+     * @OA\Get(
+     *     path="/users/{id_user}/photos",
+     *     tags={"photo"},
+     *     summary="Get users photos",
+     *     description="Recuperer les photos prises depuis l'application mobile qui ne sont toujours pas affectées à une serie",
+     *     @OA\Parameter(
+     *          name="userId",
+     *          in="path",
+     *          description="id de l'utilisateur connecté",
+     *          required=true,
+     *          @OA\Schema(type="int")
+     *      ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="List des photos",
+     *          @OA\JsonContent(
+     *              type="array",
+     *              @OA\Items(ref="#/components/schemas/Photo")
+     *          )
+     *     )
+     * )
+     */
     public function GetPhotosByUser(Request $rq, Response $rs, $args){
         if(isset($args['id'])){
             $photos = Photo::where('user_id','=',$args['id'])->whereNull('serie_id')->get();

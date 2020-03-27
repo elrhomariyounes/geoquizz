@@ -19,16 +19,68 @@ class SerieController
         $this->_container = $_container;
     }
 
+    /**
+     * @OA\Get(
+     *     path="/difficulties",
+     *     tags={"serie"},
+     *     summary="Get all difficulties",
+     *     description="Recuperer les difficultés",
+     *     @OA\Response(
+     *         response="200",
+     *         description="List des difficultés",
+     *          @OA\JsonContent(
+     *              type="array",
+     *              @OA\Items(ref="#/components/schemas/Difficulty")
+     *          )
+     *     )
+     * )
+     */
     public function GetDifficulties(Request $rq, Response $rs){
         $difficulties = Difficulty::all();
         return ResponseWrapper::collectionResponse(new ResourceResponse("collection",200,$difficulties),$rs);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/series",
+     *     tags={"serie"},
+     *     summary="Get all series",
+     *     description="Recuperer les series",
+     *     @OA\Response(
+     *         response="200",
+     *         description="List des series",
+     *          @OA\JsonContent(
+     *              type="array",
+     *              @OA\Items(ref="#/components/schemas/Serie")
+     *          )
+     *     )
+     * )
+     */
     public function GetSeries(Request $rq, Response $rs){
         $series = Serie::all();
         return ResponseWrapper::collectionResponse(new ResourceResponse("collection",200,$series),$rs);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/series/{id_serie}",
+     *     tags={"serie"},
+     *     summary="Get Serie by ID",
+     *     description="Recuperer la serie par identifiant",
+     *     @OA\Parameter(
+     *          name="serieId",
+     *          in="path",
+     *          description="id de la serie",
+     *          required=true,
+     *          @OA\Schema(type="int")
+     *      ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="Serie",
+     *          @OA\JsonContent(ref="#/components/schemas/Serie")
+     *     )
+     * )
+     */
     public function GetSerieById(Request $rq, Response $rs, $args){
         if(isset($args['id'])){
             $serie=Serie::find($args['id']);
@@ -39,6 +91,24 @@ class SerieController
         }
     }
 
+    /**
+     * @OA\Post(
+     *     path="/series",
+     *     tags={"serie"},
+     *     summary="Add new Serie",
+     *     description="Ajout d'une nouvelle serie",
+     *     @OA\Response(
+     *         response="201",
+     *         description="Serie ajoutée",
+     *          @OA\JsonContent(ref="#/components/schemas/Serie")
+     *     ),
+     *     @OA\RequestBody(
+     *         description="",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/SerieViewModel")
+     *     )
+     * )
+     */
     public function AddSerie(Request $rq, Response $rs){
         if($rq->getAttribute('has_errors')){
             $error = new ErrorResponse("error",422,$rq->getAttribute('errors'));

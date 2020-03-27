@@ -28,21 +28,15 @@ $app->options('/{routes:.+}', function ($request, $response, $args) {
 });
 $app->add(new CorsMiddleware($container));
 
-// TODO : delete app health
-$app->get('/Hello[/]', function($rq,$rs,$args) use ($container){
-    $rs=$rs->withStatus(200)
-        ->withHeader('Content-type','application/json');
-    $rs->getBody()->write(json_encode(["message"=>"Hello Younes"]));
-});
 
 //Register
 $app->post('/register[/]',function ($rq,$rs,$args) use ($container){
-    return (new AccountController($container))->Register($rq,$rs,$args);
+    return (new AccountController($container))->Register($rq,$rs);
 })->add(new Validation(ValidatorHelper::RegisterValidators()));
 
 //Login
 $app->post('/login[/]',function ($rq,$rs,$args) use ($container){
-    return (new AccountController($container))->Login($rq,$rs,$args);
+    return (new AccountController($container))->Login($rq,$rs);
 })->add(new Validation(ValidatorHelper::SignInValidators()));
 
 //Assign serie to a photo
