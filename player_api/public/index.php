@@ -28,13 +28,6 @@ $app->options('/{routes:.+}', function ($request, $response, $args) {
 $app->add(new CorsMiddleware($container));
 
 
-// TODO : delete app health
-$app->get('/Hello[/]', function($rq,$rs,$args) use ($container){
-    $rs=$rs->withStatus(200)
-        ->withHeader('Content-type','application/json');
-    $rs->getBody()->write(json_encode(["message"=>"Hello Younes"]));
-});
-
 //Create a game
 $app->post('/games[/]',function ($rq,$rs,$args) use ($container){
     return (new GameController($container))->CreateGame($rq,$rs);
@@ -65,9 +58,13 @@ $app->get('/difficulties[/]',function ($rq,$rs,$args) use ($container){
     return (new SerieController($container))->GetDifficulties($rq,$rs);
 });
 
-
 //Get Scores of a serie
 $app->get('/series/{id}/scores[/]',function ($rq,$rs,$args) use ($container){
     return (new GameController($container))->GetSerieScores($rq,$rs,$args);
+});
+
+//Get top 10 games scores
+$app->get('/scores[/]',function ($rq,$rs,$args) use ($container){
+    return (new GameController($container))->GetAllGamesScores($rq,$rs,$args);
 });
 $app->run();

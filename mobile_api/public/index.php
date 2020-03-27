@@ -22,12 +22,6 @@ $app = new \Slim\App($container);
 //Start Eloquent Connection Database
 DataBaseHelper::ConnectToDatabase($app->getContainer()->settings['dbConf']);
 
-// TODO : delete app health
-$app->get('/Hello[/]', function($rq,$rs,$args) use ($container){
-    $rs=$rs->withStatus(200)
-        ->withHeader('Content-type','application/json');
-    $rs->getBody()->write(json_encode(["message"=>"Hello Younes"]));
-});
 
 //Login
 $app->post('/login[/]',function ($rq,$rs) use ($container){
