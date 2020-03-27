@@ -32,11 +32,11 @@ class ValidatorHelper
         ];
     }
 
-    //TODO : add maps refs validator
     public static function SerieValidators(){
         return [
             'city'=>v::stringType()->notEmpty(),
-            'difficultyId'=>v::numeric()
+            'difficultyId'=>v::numeric(),
+            'map_refs'=>v::stringType()->notEmpty()
         ];
     }
 }
