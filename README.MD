@@ -12,9 +12,7 @@
 
 * 1 base de données sql global entre les differents services
 
-
-
-##A Lire
+## A Lire
 
 * Toutes les fonctionnalités obligatoires et additionnelles sont realisées côté back-end
 * Liens des documentations des APIs sur dock.etu sont disponible dans le depôt Arche
@@ -22,7 +20,7 @@
 
 
 
-##Documentation des APIs
+## Documentation des APIs (local)
 
 * backoffice : http://api.backoffice.local:19080/swagger/index.html (veuillez intégrer token aprés le login dans la section Authorize présente en haut à droite de la page)
 * mobile : http://api.mobile.local:19180/swagger/index.html (veuillez intégrer token aprés le login dans la section Authorize présente en haut à droite de la page)
@@ -30,7 +28,7 @@
 
 
 
-##Installation local
+## Installation local
 
 ```
 Cloner le projet : git clone https://github.com/elrhomariyounes/geoquizz.git
