@@ -14,7 +14,6 @@
 
 
 
-
 ##A Lire
 
 * Toutes les fonctionnalités obligatoires et additionnelles sont realisées côté back-end
@@ -22,12 +21,12 @@
 * Les Scripts de la base de données sont dans ./backoffice_api/sql
 
 
+
 ##Documentation des APIs
 
 * backoffice : http://api.backoffice.local:19080/swagger/index.html (veuillez intégrer token aprés le login dans la section Authorize présente en haut à droite de la page)
 * mobile : http://api.mobile.local:19180/swagger/index.html (veuillez intégrer token aprés le login dans la section Authorize présente en haut à droite de la page)
 * player : http://api.player.local:19280/swagger/index.html
-
 
 
 
