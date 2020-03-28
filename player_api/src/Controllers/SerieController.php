@@ -19,6 +19,22 @@ class SerieController
         $this->_container = $_container;
     }
 
+    /**
+     * @OA\Get(
+     *     path="/series",
+     *     tags={"serie"},
+     *     summary="Get all series",
+     *     description="Recuperer les series",
+     *     @OA\Response(
+     *         response="200",
+     *         description="List des series",
+     *          @OA\JsonContent(
+     *              type="array",
+     *              @OA\Items(ref="#/components/schemas/Serie")
+     *          )
+     *     )
+     * )
+     */
     public function GetSeriesWithRandomPhoto(Request $rq, Response $rs, $args){
         $responseObject = [];
         $series = Serie::where('id','!=',0)->with('difficulty')->get();
@@ -36,7 +52,22 @@ class SerieController
         return ResponseWrapper::collectionResponse(new ResourceResponse("collection",200,$responseObject),$rs);
     }
 
-
+    /**
+     * @OA\Get(
+     *     path="/difficulties",
+     *     tags={"serie"},
+     *     summary="Get all difficulties",
+     *     description="Recuperer les difficultés",
+     *     @OA\Response(
+     *         response="200",
+     *         description="List des difficultés",
+     *          @OA\JsonContent(
+     *              type="array",
+     *              @OA\Items(ref="#/components/schemas/Difficulty")
+     *          )
+     *     )
+     * )
+     */
     public function GetDifficulties(Request $rq, Response $rs){
         $difficulties = Difficulty::all();
         return ResponseWrapper::collectionResponse(new ResourceResponse("collection",200,$difficulties),$rs);

@@ -1,0 +1,491 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "GeoQuizz Player",
+        "description": "API Player",
+        "contact": {
+            "email": "elrhomari.younes@gmail.com"
+        },
+        "version": "1.0"
+    },
+    "paths": {
+        "/games": {
+            "post": {
+                "tags": [
+                    "game"
+                ],
+                "summary": "Create Game",
+                "description": "Creation d'une nouvelle partie",
+                "operationId": "gq\\player\\Controllers\\GameController::CreateGame",
+                "requestBody": {
+                    "description": "",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GameViewModel"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Partie créée",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Game"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/games/{id_game}": {
+            "get": {
+                "tags": [
+                    "game"
+                ],
+                "summary": "Get Game by Id",
+                "description": "Recuperer la partie avec son identifiant",
+                "operationId": "gq\\player\\Controllers\\GameController::GetGameById",
+                "parameters": [
+                    {
+                        "name": "game Id",
+                        "in": "path",
+                        "description": "id de la partie",
+                        "required": true,
+                        "schema": {
+                            "type": "int"
+                        }
+                    },
+                    {
+                        "name": "game token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Aucune partie avec cette identifiant"
+                    },
+                    "200": {
+                        "description": "Game",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Game"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "game"
+                ],
+                "summary": "Finish game",
+                "description": "Terminer une partie assigner le score",
+                "operationId": "gq\\player\\Controllers\\GameController::FinishGame",
+                "parameters": [
+                    {
+                        "name": "game id",
+                        "in": "path",
+                        "description": "id de la partie",
+                        "required": true,
+                        "schema": {
+                            "type": "int"
+                        }
+                    },
+                    {
+                        "name": "game token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AssignScore"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "La partie est terminée"
+                    }
+                }
+            }
+        },
+        "/games/{id_game}/photos": {
+            "get": {
+                "tags": [
+                    "game"
+                ],
+                "summary": "Get Game photos",
+                "description": "Recuperer les photos d'une partie",
+                "operationId": "gq\\player\\Controllers\\GameController::GetGamePhotos",
+                "parameters": [
+                    {
+                        "name": "game Id",
+                        "in": "path",
+                        "description": "id de la partie",
+                        "required": true,
+                        "schema": {
+                            "type": "int"
+                        }
+                    },
+                    {
+                        "name": "game token",
+                        "in": "query",
+                        "description": "token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Aucune partie avec cette identifiant"
+                    },
+                    "200": {
+                        "description": "Array of Photo",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Photo"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/series/{id_serie}/scores": {
+            "get": {
+                "tags": [
+                    "serie"
+                ],
+                "summary": "Get Serie Score",
+                "description": "Recuperer les scores d'une serie",
+                "operationId": "gq\\player\\Controllers\\GameController::GetSerieScores",
+                "parameters": [
+                    {
+                        "name": "serie id",
+                        "in": "path",
+                        "description": "id de la serie",
+                        "required": true,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Aucune serie avec cette identifiant"
+                    },
+                    "200": {
+                        "description": "Array of Score",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Score"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/scores": {
+            "get": {
+                "tags": [
+                    "game"
+                ],
+                "summary": "Get all games scores",
+                "description": "Recuperer tout les scores",
+                "operationId": "gq\\player\\Controllers\\GameController::GetAllGamesScores",
+                "responses": {
+                    "200": {
+                        "description": "Array of Score",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Score"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/series": {
+            "get": {
+                "tags": [
+                    "serie"
+                ],
+                "summary": "Get all series",
+                "description": "Recuperer les series",
+                "operationId": "gq\\player\\Controllers\\SerieController::GetSeriesWithRandomPhoto",
+                "responses": {
+                    "200": {
+                        "description": "List des series",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Serie"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/difficulties": {
+            "get": {
+                "tags": [
+                    "serie"
+                ],
+                "summary": "Get all difficulties",
+                "description": "Recuperer les difficultés",
+                "operationId": "gq\\player\\Controllers\\SerieController::GetDifficulties",
+                "responses": {
+                    "200": {
+                        "description": "List des difficultés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Difficulty"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AssignScore": {
+                "title": "Assign score View Model",
+                "description": "Assigne un score à la partie",
+                "properties": {
+                    "score": {
+                        "title": "Game score",
+                        "description": "Score de la partie",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "Difficulty": {
+                "title": "Difficulty",
+                "description": "Difficulté",
+                "properties": {
+                    "id": {
+                        "title": "Serie Id",
+                        "description": "Serie id",
+                        "type": "integer",
+                        "format": "2"
+                    },
+                    "description": {
+                        "title": "Difficulty description",
+                        "description": "Diffuclté",
+                        "type": "string"
+                    },
+                    "distance": {
+                        "title": "Distance",
+                        "description": "Distance de calcul de point",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "Game": {
+                "title": "Game",
+                "description": "Partie",
+                "properties": {
+                    "id": {
+                        "title": "Game Id",
+                        "description": "Game id",
+                        "type": "string"
+                    },
+                    "player": {
+                        "title": "Player Pseudo",
+                        "description": "Pseudo du joueur",
+                        "type": "string"
+                    },
+                    "serie_id": {
+                        "title": "Serie Id",
+                        "description": "Serie id",
+                        "type": "integer",
+                        "format": "2"
+                    },
+                    "nb_photos": {
+                        "title": "Number of Game Photos",
+                        "description": "Nombre de photos dans la partie",
+                        "type": "integer",
+                        "format": "2"
+                    },
+                    "token": {
+                        "title": "Game Token",
+                        "description": "Ce token doit être associé à toutes les autres pour pouvoir identifier la partie",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "GameViewModel": {
+                "title": "GameViewModel",
+                "description": "Creation d'une partie",
+                "properties": {
+                    "player": {
+                        "title": "Player Pseudo",
+                        "description": "Pseudo du joueur",
+                        "type": "string"
+                    },
+                    "serieId": {
+                        "title": "Serie Id",
+                        "description": "Serie id",
+                        "type": "integer",
+                        "format": "2"
+                    }
+                },
+                "type": "object"
+            },
+            "Photo": {
+                "title": "Photo",
+                "description": "Photo Model",
+                "properties": {
+                    "id": {
+                        "title": "Photo Id",
+                        "description": "l'id de la photo",
+                        "type": "integer"
+                    },
+                    "description": {
+                        "title": "Photo Description",
+                        "description": "description de la photo",
+                        "type": "string"
+                    },
+                    "url": {
+                        "title": "Cloudinary url",
+                        "description": "url cloud de la photo",
+                        "type": "string"
+                    },
+                    "position": {
+                        "title": "Photo Coordinates",
+                        "description": "Coordonnées où la photo a été prise",
+                        "type": "string"
+                    },
+                    "serie_id": {
+                        "title": "Serie Id",
+                        "description": "Serie de la photo",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "Score": {
+                "title": "Score",
+                "description": "Score Model",
+                "properties": {
+                    "player": {
+                        "title": "Player Pseudo",
+                        "description": "Pseudo du joueur",
+                        "type": "string"
+                    },
+                    "score": {
+                        "title": "Game score",
+                        "description": "Score de la partie",
+                        "type": "integer"
+                    },
+                    "serie_id": {
+                        "title": "Serie Id",
+                        "description": "Serie id",
+                        "type": "integer",
+                        "format": "2"
+                    }
+                },
+                "type": "object"
+            },
+            "Serie": {
+                "title": "Serie",
+                "description": "Serie",
+                "properties": {
+                    "id": {
+                        "title": "Serie Id",
+                        "description": "Serie id",
+                        "type": "integer",
+                        "format": "2"
+                    },
+                    "city": {
+                        "title": "City",
+                        "description": "Ville de la serie",
+                        "type": "string"
+                    },
+                    "map_refs": {
+                        "title": "Serie Map Coordinates",
+                        "description": "Coordonées de la carte initial de la serie",
+                        "type": "string"
+                    },
+                    "difficulty_id": {
+                        "title": "Difficulty Id",
+                        "description": "id de la difficulte",
+                        "type": "integer",
+                        "format": "2"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "parameters": {}
+    },
+    "tags": [
+        {
+            "name": "game",
+            "description": "Ajout photo, affectation photo à une serie, recuperation des photos prises par l'utilisateur"
+        },
+        {
+            "name": "serie",
+            "description": "Recuperer les difficultés, les series et l'ajout d'une nouvelle serie"
+        },
+        {
+            "name": "game",
+            "description": "Ajout photo, affectation photo à une serie, recuperation des photos prises par l'utilisateur"
+        },
+        {
+            "name": "serie",
+            "description": "Recuperer les difficultés, les series et l'ajout d'une nouvelle serie"
+        }
+    ]
+}

@@ -22,6 +22,24 @@ class GameController
         $this->_container = $_container;
     }
 
+    /**
+     * @OA\Post(
+     *     path="/games",
+     *     tags={"game"},
+     *     summary="Create Game",
+     *     description="Creation d'une nouvelle partie",
+     *     @OA\Response(
+     *         response="201",
+     *         description="Partie créée",
+     *          @OA\JsonContent(ref="#/components/schemas/Game")
+     *     ),
+     *     @OA\RequestBody(
+     *         description="",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/GameViewModel")
+     *     )
+     * )
+     */
     public function CreateGame(Request $rq, Response $rs){
         //Check if errors
         if($rq->getAttribute('has_errors')){
@@ -56,11 +74,35 @@ class GameController
     }
 
     /**
-     * Get game informations : serie difficulty
-     * @param Request $rq
-     * @param Response $rs
-     * @param $args
-     * @return Response
+     * @OA\Get(
+     *     path="/games/{id_game}",
+     *     tags={"game"},
+     *     summary="Get Game by Id",
+     *     description="Recuperer la partie avec son identifiant",
+     *     @OA\Parameter(
+     *          name="game Id",
+     *          in="path",
+     *          description="id de la partie",
+     *          required=true,
+     *          @OA\Schema(type="int")
+     *      ),
+     *     @OA\Parameter(
+     *          name="game token",
+     *          in="query",
+     *          description="token",
+     *          required=true,
+     *          @OA\Schema(type="string")
+     *      ),
+     *     @OA\Response(
+     *          response="404",
+     *          description="Aucune partie avec cette identifiant"
+     *      ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="Game",
+     *          @OA\JsonContent(ref="#/components/schemas/Game")
+     *     )
+     * )
      */
     public function GetGameById(Request $rq, Response $rs, $args){
         if(isset($args['id'])){
@@ -72,9 +114,39 @@ class GameController
         }
     }
 
-    /*
-     * Get game photos
-     *
+    /**
+     * @OA\Get(
+     *     path="/games/{id_game}/photos",
+     *     tags={"game"},
+     *     summary="Get Game photos",
+     *     description="Recuperer les photos d'une partie",
+     *     @OA\Parameter(
+     *          name="game Id",
+     *          in="path",
+     *          description="id de la partie",
+     *          required=true,
+     *          @OA\Schema(type="int")
+     *      ),
+     *     @OA\Parameter(
+     *          name="game token",
+     *          in="query",
+     *          description="token",
+     *          required=true,
+     *          @OA\Schema(type="string")
+     *      ),
+     *     @OA\Response(
+     *          response="404",
+     *          description="Aucune partie avec cette identifiant"
+     *      ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="Array of Photo",
+     *          @OA\JsonContent(
+     *              type="array",
+     *              @OA\Items(ref="#/components/schemas/Photo")
+     *          )
+     *     )
+     * )
      */
     public function GetGamePhotos(Request $rq, Response $rs, $args){
         $game=Game::find($args['id']);
@@ -99,6 +171,37 @@ class GameController
         return ResponseWrapper::errorResponse(new ErrorResponse("error",404,"No game found with the id : ".$args['id']),$rs);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/games/{id_game}",
+     *     tags={"game"},
+     *     summary="Finish game",
+     *     description="Terminer une partie assigner le score",
+     *     @OA\Parameter(
+     *          name="game id",
+     *          in="path",
+     *          description="id de la partie",
+     *          required=true,
+     *          @OA\Schema(type="int")
+     *      ),
+     *     @OA\Parameter(
+     *          name="game token",
+     *          in="query",
+     *          description="token",
+     *          required=true,
+     *          @OA\Schema(type="string")
+     *      ),
+     *     @OA\Response(
+     *         response="204",
+     *         description="La partie est terminée"
+     *     ),
+     *     @OA\RequestBody(
+     *         description="",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/AssignScore")
+     *     )
+     * )
+     */
     public function FinishGame(Request $rq, Response $rs, $args){
         //Get body
         $body = $rq->getParsedBody();
@@ -116,7 +219,33 @@ class GameController
         return ResponseWrapper::errorResponse(new ErrorResponse("error",404,"No game found with the id : ".$args['id']),$rs);
     }
 
-    //Get Scores
+    /**
+     * @OA\Get(
+     *     path="/series/{id_serie}/scores",
+     *     tags={"serie"},
+     *     summary="Get Serie Score",
+     *     description="Recuperer les scores d'une serie",
+     *     @OA\Parameter(
+     *          name="serie id",
+     *          in="path",
+     *          description="id de la serie",
+     *          required=true,
+     *          @OA\Schema(type="int")
+     *      ),
+     *     @OA\Response(
+     *          response="404",
+     *          description="Aucune serie avec cette identifiant"
+     *      ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="Array of Score",
+     *          @OA\JsonContent(
+     *              type="array",
+     *              @OA\Items(ref="#/components/schemas/Score")
+     *          )
+     *     )
+     * )
+     */
     public function GetSerieScores(Request $rq, Response $rs, $args){
         $games = Game::where('serie_id','=',$args['id'])->where('state','=',3)
                         ->orderBy('score','DESC')
@@ -127,7 +256,22 @@ class GameController
         }
         return ResponseWrapper::errorResponse(new ErrorResponse("error",404,"No serie found with the id : ".$args['id']),$rs);
     }
-
+    /**
+     * @OA\Get(
+     *     path="/scores",
+     *     tags={"game"},
+     *     summary="Get all games scores",
+     *     description="Recuperer tout les scores",
+     *     @OA\Response(
+     *         response="200",
+     *         description="Array of Score",
+     *          @OA\JsonContent(
+     *              type="array",
+     *              @OA\Items(ref="#/components/schemas/Score")
+     *          )
+     *     )
+     * )
+     */
     public function GetAllGamesScores(Request $rq, Response $rs, $args){
         $games = Game::where('state','=',3)->with('serie')
                         ->orderBy('score','DESC')
