@@ -4,7 +4,7 @@ use OpenApi\Annotations as OA;
 
 /**
  * @OA\Info(
- *     title="GeoQuizz",
+ *     title="GeoQuizz Back-office",
  *     version="1.0",
  *     description="GeoQuizz : Back-office",
  *     @OA\Contact(

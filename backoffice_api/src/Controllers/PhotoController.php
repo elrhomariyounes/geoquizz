@@ -111,17 +111,22 @@ class PhotoController
 
     /**
      * @OA\Get(
-     *     path="/users/{id_user}/photos",
+     *     path="/users/userId/photos",
      *     tags={"photo"},
      *     summary="Get users photos",
      *     description="Recuperer les photos prises depuis l'application mobile qui ne sont toujours pas affectées à une serie",
+     *     security={{"bearerAuth": {"write:photos", "read:photos"}}},
      *     @OA\Parameter(
      *          name="userId",
      *          in="path",
      *          description="id de l'utilisateur connecté",
      *          required=true,
-     *          @OA\Schema(type="int")
+     *          @OA\Schema(type="string")
      *      ),
+     *     @OA\Response(
+     *         response="404",
+     *         description="Toutes les photos sont assignées à une serie"
+     *     ),
      *     @OA\Response(
      *         response="200",
      *         description="List des photos",

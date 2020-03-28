@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "GeoQuizz",
+        "title": "GeoQuizz Back-office",
         "description": "GeoQuizz : Back-office",
         "contact": {
             "email": "elrhomari.younes@gmail.com"
@@ -49,7 +49,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/RegisterViewModel"
+                                "$ref": "#/components/schemas/LoginViewModel"
                             }
                         }
                     }
@@ -141,7 +141,7 @@
                 }
             }
         },
-        "/users/{id_user}/photos": {
+        "/users/userId/photos": {
             "get": {
                 "tags": [
                     "photo"
@@ -156,11 +156,14 @@
                         "description": "id de l'utilisateur connecté",
                         "required": true,
                         "schema": {
-                            "type": "int"
+                            "type": "string"
                         }
                     }
                 ],
                 "responses": {
+                    "404": {
+                        "description": "Toutes les photos sont assignées à une serie"
+                    },
                     "200": {
                         "description": "List des photos",
                         "content": {
@@ -174,7 +177,15 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "write:photos",
+                            "read:photos"
+                        ]
+                    }
+                ]
             }
         },
         "/difficulties": {
@@ -278,6 +289,9 @@
                     }
                 ],
                 "responses": {
+                    "404": {
+                        "description": "Aucune serie avec cette identifiant"
+                    },
                     "200": {
                         "description": "Serie",
                         "content": {
@@ -348,6 +362,25 @@
                         "title": "User ID",
                         "description": "User id",
                         "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "LoginViewModel": {
+                "title": "Login",
+                "description": "Model pour se connecter",
+                "properties": {
+                    "email": {
+                        "title": "Email",
+                        "description": "Email",
+                        "type": "string",
+                        "format": "email@domain.com"
+                    },
+                    "password": {
+                        "title": "Password",
+                        "description": "Password",
+                        "type": "string",
+                        "maximum": 255
                     }
                 },
                 "type": "object"
@@ -509,7 +542,15 @@
                 "type": "object"
             }
         },
-        "parameters": {}
+        "parameters": {},
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "bearerAuth",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
     },
     "tags": [
         {

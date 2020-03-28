@@ -79,7 +79,7 @@ class AccountController
      *     @OA\RequestBody(
      *         description="",
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/RegisterViewModel")
+     *         @OA\JsonContent(ref="#/components/schemas/LoginViewModel")
      *     )
      * )
      */

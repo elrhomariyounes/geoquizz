@@ -75,6 +75,10 @@ class SerieController
      *          @OA\Schema(type="int")
      *      ),
      *     @OA\Response(
+     *          response="404",
+     *          description="Aucune serie avec cette identifiant"
+     *      ),
+     *     @OA\Response(
      *         response="200",
      *         description="Serie",
      *          @OA\JsonContent(ref="#/components/schemas/Serie")
