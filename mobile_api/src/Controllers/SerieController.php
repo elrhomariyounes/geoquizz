@@ -20,16 +20,66 @@ class SerieController
         $this->_container = $_container;
     }
 
+    /**
+     * @OA\Get(
+     *     path="/difficulties",
+     *     tags={"serie"},
+     *     summary="Get all difficulties",
+     *     description="Recuperer les difficultés",
+     *     @OA\Response(
+     *         response="200",
+     *         description="List des difficultés",
+     *          @OA\JsonContent(
+     *              type="array",
+     *              @OA\Items(ref="#/components/schemas/Difficulty")
+     *          )
+     *     )
+     * )
+     */
     public function GetDifficulties(Request $rq, Response $rs){
         $difficulties = Difficulty::all();
         return ResponseWrapper::collectionResponse(new ResourceResponse("collection",200,$difficulties),$rs);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/series",
+     *     tags={"serie"},
+     *     summary="Get all series",
+     *     description="Recuperer les series",
+     *     @OA\Response(
+     *         response="200",
+     *         description="List des series",
+     *          @OA\JsonContent(
+     *              type="array",
+     *              @OA\Items(ref="#/components/schemas/Serie")
+     *          )
+     *     )
+     * )
+     */
     public function GetSeries(Request $rq, Response $rs){
         $series = Serie::all();
         return ResponseWrapper::collectionResponse(new ResourceResponse("collection",200,$series),$rs);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/series",
+     *     tags={"serie"},
+     *     summary="Add new Serie",
+     *     description="Ajout d'une nouvelle serie",
+     *     @OA\Response(
+     *         response="201",
+     *         description="Serie ajoutée",
+     *          @OA\JsonContent(ref="#/components/schemas/Serie")
+     *     ),
+     *     @OA\RequestBody(
+     *         description="",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/SerieViewModel")
+     *     )
+     * )
+     */
     public function AddSerie(Request $rq, Response $rs){
         if($rq->getAttribute('has_errors')){
             $error = new ErrorResponse("error",422,$rq->getAttribute('errors'));
@@ -51,6 +101,31 @@ class SerieController
             return $rs;
         }
     }
+
+    /**
+     * @OA\Put(
+     *     path="/photos/{id_photo}",
+     *     tags={"photo"},
+     *     summary="Assign photo to a serie",
+     *     description="Affectation d'une photo prise de l'application mobile à une serie",
+     *     @OA\Parameter(
+     *          name="photoId",
+     *          in="path",
+     *          description="id de la photo",
+     *          required=true,
+     *          @OA\Schema(type="int")
+     *      ),
+     *     @OA\Response(
+     *         response="204",
+     *         description="La photo est affecté à la serie demandé"
+     *     ),
+     *     @OA\RequestBody(
+     *         description="",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/AssignPhotoToSerie")
+     *     )
+     * )
+     */
     public function AssignSerieToPhoto(Request $rq, Response $rs, $args){
         if(isset($args['id'])){
             $body = $rq->getParsedBody();

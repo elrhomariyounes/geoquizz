@@ -7,7 +7,7 @@ use gq\mobile\Controllers\SerieController;
 use gq\mobile\Helpers\DataBaseHelper;
 use gq\mobile\Helpers\Validator\ValidatorHelper;
 use gq\mobile\Middlewares\TokenMiddleware;
-
+use gq\mobile\Middlewares\CorsMiddleware;
 require "../src/vendor/autoload.php";
 
 //pass the settings to slim container
@@ -22,6 +22,11 @@ $app = new \Slim\App($container);
 //Start Eloquent Connection Database
 DataBaseHelper::ConnectToDatabase($app->getContainer()->settings['dbConf']);
 
+//Cors Middleware
+$app->options('/{routes:.+}', function ($request, $response, $args) {
+    return $response;
+});
+$app->add(new CorsMiddleware($container));
 
 //Login
 $app->post('/login[/]',function ($rq,$rs) use ($container){

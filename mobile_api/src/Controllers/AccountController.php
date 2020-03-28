@@ -19,6 +19,28 @@ class AccountController
         $this->_container = $_container;
     }
 
+    /**
+     * @OA\Post(
+     *     path="/login",
+     *     tags={"user"},
+     *     summary="LogIn",
+     *     description="Connexion de l'utilisateur",
+     *     @OA\Response(
+     *         response="200",
+     *         description="Connexion reussi",
+     *          @OA\JsonContent(ref="#/components/schemas/LoginResponse")
+     *     ),
+     *     @OA\Response(
+     *         response="401",
+     *         description="Bad credentials",
+     *     ),
+     *     @OA\RequestBody(
+     *         description="",
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/LoginViewModel")
+     *     )
+     * )
+     */
     public function Login(Request $rq, Response $rs){
         if($rq->getAttribute('has_errors')){
             $error = new ErrorResponse("error",422,$rq->getAttribute('errors'));

@@ -1,0 +1,478 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "GeoQuizz Mobile",
+        "description": "API Mobile",
+        "contact": {
+            "email": "elrhomari.younes@gmail.com"
+        },
+        "version": "1.0"
+    },
+    "paths": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "LogIn",
+                "description": "Connexion de l'utilisateur",
+                "operationId": "gq\\mobile\\Controllers\\AccountController::Login",
+                "requestBody": {
+                    "description": "",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginViewModel"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Connexion reussi",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Bad credentials"
+                    }
+                }
+            }
+        },
+        "/photos": {
+            "post": {
+                "tags": [
+                    "photo"
+                ],
+                "summary": "Add new Photo",
+                "description": "Ajout d'une nouvelle photo",
+                "operationId": "gq\\mobile\\Controllers\\PhotoController::AddPhoto",
+                "requestBody": {
+                    "description": "",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PhotoViewModel"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Photo ajoutée",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Photo"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id_user}/photos": {
+            "get": {
+                "tags": [
+                    "photo"
+                ],
+                "summary": "Get users photos",
+                "description": "Recuperer les photos prises depuis l'application mobile qui ne sont toujours pas affectées à une serie",
+                "operationId": "gq\\mobile\\Controllers\\PhotoController::GetPhotosByUser",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "id de l'utilisateur connecté",
+                        "required": true,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Toutes les photos sont assignées à une serie"
+                    },
+                    "200": {
+                        "description": "List des photos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Photo"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/difficulties": {
+            "get": {
+                "tags": [
+                    "serie"
+                ],
+                "summary": "Get all difficulties",
+                "description": "Recuperer les difficultés",
+                "operationId": "gq\\mobile\\Controllers\\SerieController::GetDifficulties",
+                "responses": {
+                    "200": {
+                        "description": "List des difficultés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Difficulty"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/series": {
+            "get": {
+                "tags": [
+                    "serie"
+                ],
+                "summary": "Get all series",
+                "description": "Recuperer les series",
+                "operationId": "gq\\mobile\\Controllers\\SerieController::GetSeries",
+                "responses": {
+                    "200": {
+                        "description": "List des series",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Serie"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "serie"
+                ],
+                "summary": "Add new Serie",
+                "description": "Ajout d'une nouvelle serie",
+                "operationId": "gq\\mobile\\Controllers\\SerieController::AddSerie",
+                "requestBody": {
+                    "description": "",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SerieViewModel"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Serie ajoutée",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Serie"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/photos/{id_photo}": {
+            "put": {
+                "tags": [
+                    "photo"
+                ],
+                "summary": "Assign photo to a serie",
+                "description": "Affectation d'une photo prise de l'application mobile à une serie",
+                "operationId": "gq\\mobile\\Controllers\\SerieController::AssignSerieToPhoto",
+                "parameters": [
+                    {
+                        "name": "photoId",
+                        "in": "path",
+                        "description": "id de la photo",
+                        "required": true,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AssignPhotoToSerie"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "La photo est affecté à la serie demandé"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AssignPhotoToSerie": {
+                "title": "Assign Serie",
+                "description": "Affectation d'une photo à une serie existante",
+                "properties": {
+                    "userId": {
+                        "title": "User UUID",
+                        "description": "l'id de l'utilisateur",
+                        "type": "string"
+                    },
+                    "serieId": {
+                        "title": "Serie Id",
+                        "description": "serie à la quelle la photo sera affecté",
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "type": "object"
+            },
+            "Difficulty": {
+                "title": "Difficulty",
+                "description": "Difficulté",
+                "properties": {
+                    "id": {
+                        "title": "Serie Id",
+                        "description": "Serie id",
+                        "type": "integer",
+                        "format": "2"
+                    },
+                    "description": {
+                        "title": "Difficulty description",
+                        "description": "Diffuclté",
+                        "type": "string"
+                    },
+                    "distance": {
+                        "title": "Distance",
+                        "description": "Distance de calcul de point",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "LoginResponse": {
+                "title": "Logged",
+                "description": "Login ViewModel",
+                "properties": {
+                    "token": {
+                        "title": "JWT Token",
+                        "description": "JWT Token to join to every request in Authorization Header",
+                        "type": "string"
+                    },
+                    "id": {
+                        "title": "User ID",
+                        "description": "User id",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "LoginViewModel": {
+                "title": "Login",
+                "description": "Model pour se connecter",
+                "properties": {
+                    "email": {
+                        "title": "Email",
+                        "description": "Email",
+                        "type": "string",
+                        "format": "email@domain.com"
+                    },
+                    "password": {
+                        "title": "Password",
+                        "description": "Password",
+                        "type": "string",
+                        "maximum": 255
+                    }
+                },
+                "type": "object"
+            },
+            "Photo": {
+                "title": "Photo",
+                "description": "Photo Model",
+                "properties": {
+                    "id": {
+                        "title": "Photo Id",
+                        "description": "l'id de la photo",
+                        "type": "integer"
+                    },
+                    "description": {
+                        "title": "Photo Description",
+                        "description": "description de la photo",
+                        "type": "string"
+                    },
+                    "url": {
+                        "title": "Cloudinary url",
+                        "description": "url cloud de la photo",
+                        "type": "string"
+                    },
+                    "position": {
+                        "title": "Photo Coordinates",
+                        "description": "Coordonnées où la photo a été prise",
+                        "type": "string"
+                    },
+                    "serie_id": {
+                        "title": "Serie Id",
+                        "description": "Serie de la photo",
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "title": "User UUID",
+                        "description": "l'id de l'utilisateur",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "PhotoViewModel": {
+                "title": "Add new photo",
+                "description": "View Model pour ajouter une nouvelle photo",
+                "properties": {
+                    "userId": {
+                        "title": "User UUID",
+                        "description": "l'id de l'utilisateur",
+                        "type": "string"
+                    },
+                    "description": {
+                        "title": "Photo Description",
+                        "description": "description de la photo",
+                        "type": "string"
+                    },
+                    "url": {
+                        "title": "Cloudinary url",
+                        "description": "url cloud de la photo",
+                        "type": "string"
+                    },
+                    "lng": {
+                        "title": "Longitude",
+                        "description": "Longitude",
+                        "type": "number"
+                    },
+                    "lat": {
+                        "title": "latitude",
+                        "description": "latitude",
+                        "type": "number"
+                    },
+                    "serieId": {
+                        "title": "Serie Id",
+                        "description": "Serie id",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "Serie": {
+                "title": "Serie",
+                "description": "Serie",
+                "properties": {
+                    "id": {
+                        "title": "Serie Id",
+                        "description": "Serie id",
+                        "type": "integer",
+                        "format": "2"
+                    },
+                    "city": {
+                        "title": "City",
+                        "description": "Ville de la serie",
+                        "type": "string"
+                    },
+                    "map_refs": {
+                        "title": "Serie Map Coordinates",
+                        "description": "Coordonées de la carte initial de la serie",
+                        "type": "string"
+                    },
+                    "difficulty_id": {
+                        "title": "Difficulty Id",
+                        "description": "id de la difficulte",
+                        "type": "integer",
+                        "format": "2"
+                    }
+                },
+                "type": "object"
+            },
+            "SerieViewModel": {
+                "title": "Add serie Model",
+                "description": "Model pour ajout d'une nouvelle serie",
+                "properties": {
+                    "userId": {
+                        "title": "User Id",
+                        "description": "User Id",
+                        "type": "string"
+                    },
+                    "city": {
+                        "title": "City",
+                        "description": "Ville de la serie",
+                        "type": "string"
+                    },
+                    "map_refs": {
+                        "title": "Serie Map Coordinates",
+                        "description": "Coordonées de la carte initial de la serie",
+                        "type": "string"
+                    },
+                    "difficulty_id": {
+                        "title": "Difficulty Id",
+                        "description": "id de la difficulte",
+                        "type": "integer",
+                        "format": "2"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "parameters": {}
+    },
+    "tags": [
+        {
+            "name": "user",
+            "description": "LogIn"
+        },
+        {
+            "name": "photo",
+            "description": "Ajout photo, affectation photo à une serie, recuperation des photos prises par l'utilisateur"
+        },
+        {
+            "name": "serie",
+            "description": "Recuperer les difficultés, les series et l'ajout d'une nouvelle serie"
+        },
+        {
+            "name": "user",
+            "description": "LogIn"
+        },
+        {
+            "name": "photo",
+            "description": "Ajout photo, affectation photo à une serie, recuperation des photos prises par l'utilisateur"
+        },
+        {
+            "name": "serie",
+            "description": "Recuperer les difficultés, les series et l'ajout d'une nouvelle serie"
+        }
+    ]
+}
