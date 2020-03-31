@@ -101,6 +101,7 @@ class SerieController
      *     tags={"serie"},
      *     summary="Add new Serie",
      *     description="Ajout d'une nouvelle serie",
+     *     security={{"bearerAuth": {"write:photos", "read:photos"}}},
      *     @OA\Response(
      *         response="201",
      *         description="Serie ajoutée",

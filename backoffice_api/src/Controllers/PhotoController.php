@@ -24,6 +24,7 @@ class PhotoController
      *     tags={"photo"},
      *     summary="Assign photo to a serie",
      *     description="Affectation d'une photo prise de l'application mobile à une serie",
+     *     security={{"bearerAuth": {"write:photos", "read:photos"}}},
      *     @OA\Parameter(
      *          name="photoId",
      *          in="path",
@@ -72,6 +73,7 @@ class PhotoController
      *     tags={"photo"},
      *     summary="Add new Photo",
      *     description="Ajout d'une nouvelle photo",
+     *     security={{"bearerAuth": {"write:photos", "read:photos"}}},
      *     @OA\Response(
      *         response="201",
      *         description="Photo ajoutée",
