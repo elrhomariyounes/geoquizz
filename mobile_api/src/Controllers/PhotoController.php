@@ -25,6 +25,7 @@ class PhotoController
      *     tags={"photo"},
      *     summary="Add new Photo",
      *     description="Ajout d'une nouvelle photo",
+     *     security={{"bearerAuth": {"write:photos", "read:photos"}}},
      *     @OA\Response(
      *         response="201",
      *         description="Photo ajoutée",
@@ -69,6 +70,7 @@ class PhotoController
      *     tags={"photo"},
      *     summary="Get users photos",
      *     description="Recuperer les photos prises depuis l'application mobile qui ne sont toujours pas affectées à une serie",
+     *     security={{"bearerAuth": {"write:photos", "read:photos"}}},
      *     @OA\Parameter(
      *          name="userId",
      *          in="path",
