@@ -5,6 +5,17 @@ networks:
     driver: bridge
 
 services:
+  web.backoffice:
+    image: elrhomariyounes/testbackoffice
+    ports:
+      - "19380:80"
+    networks:
+      - d.net
+    links:
+      - api.backoffice:api.backoffice.local
+    depends_on:
+      - api.backoffice
+
   api.backoffice:
     image: canals/php:latest
     environment:
@@ -55,6 +66,17 @@ services:
       - d.net
     links:
       - mysql:db
+
+  web.player:
+    image: elrhomariyounes/testplayer
+    ports:
+      - "19480:80"
+    networks:
+      - d.net
+    links:
+      - api.player:api.player.local
+    depends_on:
+      - api.player
 
   #############################
   # mysql + phpmyadmin
