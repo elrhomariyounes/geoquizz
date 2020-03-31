@@ -105,7 +105,15 @@
                     "204": {
                         "description": "La photo est affecté à la serie demandé"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "write:photos",
+                            "read:photos"
+                        ]
+                    }
+                ]
             }
         },
         "/photos": {
@@ -138,7 +146,15 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "write:photos",
+                            "read:photos"
+                        ]
+                    }
+                ]
             }
         },
         "/users/userId/photos": {
@@ -266,7 +282,15 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "write:photos",
+                            "read:photos"
+                        ]
+                    }
+                ]
             }
         },
         "/series/{id_serie}": {

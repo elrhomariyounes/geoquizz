@@ -75,7 +75,15 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "write:photos",
+                            "read:photos"
+                        ]
+                    }
+                ]
             }
         },
         "/users/{id_user}/photos": {
@@ -114,7 +122,15 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "write:photos",
+                            "read:photos"
+                        ]
+                    }
+                ]
             }
         },
         "/difficulties": {
@@ -195,7 +211,15 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "write:photos",
+                            "read:photos"
+                        ]
+                    }
+                ]
             }
         },
         "/photos/{id_photo}": {
@@ -447,7 +471,15 @@
                 "type": "object"
             }
         },
-        "parameters": {}
+        "parameters": {},
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "bearerAuth",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
     },
     "tags": [
         {
