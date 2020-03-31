@@ -1,5 +1,7 @@
-# geoquizzroot
-
+# geoquizzbackoffice
+```
+To test the project locally please follow the instruction in global README.MD file
+```
 ## Project setup
 ```
 npm install

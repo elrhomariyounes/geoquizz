@@ -1,6 +1,6 @@
 # geoquizzplayer
 ```
-Please use local_test branch for local test issue in master branch due SSL Certificat in the Backend services (containers)
+To test the project locally please follow the instruction in global README.MD file
 ```
 ## Project setup
 ```

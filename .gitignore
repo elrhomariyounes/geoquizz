@@ -103,7 +103,8 @@ composer.phar
 /backoffice_api/src/vendor/
 /mobile_api/src/vendor/
 /player_api/src/vendor/
-
+/player_web/node_modules/
+/backoffice_web/node_modules/
 /doc/api.doc/docs/
 .idea/inspectionProfiles/
 doc/internals/
